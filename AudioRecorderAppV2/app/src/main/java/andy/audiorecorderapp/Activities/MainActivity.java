@@ -2,23 +2,15 @@ package andy.audiorecorderapp.Activities;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
-import java.io.File;
-import java.io.IOException;
 
 import andy.audiorecorderapp.Fragments.FromHomeToPlay;
 import andy.audiorecorderapp.Fragments.FromHomeToRecord;
@@ -31,41 +23,21 @@ public class MainActivity extends AppCompatActivity implements FromHomeToRecord,
 
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-    private MediaRecorder myAudioRecorder;
-    // Requesting permission to RECORD_AUDIO
     private boolean permissionToRecordAccepted = false;
-    private String fileName;
-    private MediaPlayer mediaPlayer;
+
     private FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.audio_recorder_layout);
-        ensurePermissionGranted();
 
-        createNewRecorder();
+        ensurePermissionGranted();
 
         fm = getSupportFragmentManager();
 
-
         openFragment(new HomeFragment(), true);
-        //fm.popBackStack();
     }
-
-    public void onRecordClick(View btn) {
-        createNewRecorder();
-        try {
-            myAudioRecorder.prepare();
-        } catch (IllegalStateException ise) {
-            Log.d("OUT", "SOMETHING WENT WRONG ISE");
-        } catch (IOException ioe) {
-            Log.d("OUT", "SOMETHING WENT WRONG IO" + ioe.getMessage());
-        }
-        myAudioRecorder.start();
-        Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
-    }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -78,23 +50,6 @@ public class MainActivity extends AppCompatActivity implements FromHomeToRecord,
         if (!permissionToRecordAccepted ) finish();
 
     }
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (myAudioRecorder != null) {
-            myAudioRecorder.release();
-            myAudioRecorder = null;
-        }
-
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-    }
-
-
 
     private void ensurePermissionGranted() {
         // Here, thisActivity is the current activity
@@ -124,39 +79,6 @@ public class MainActivity extends AppCompatActivity implements FromHomeToRecord,
             Log.d("PERM", "GRANTED");
         }
     }
-
-
-    private void createUntitledRecording() {
-        // Record to the external cache directory for visibility
-        int idx = 0;
-        boolean isUsed = false;
-        while (!isUsed) {
-            int local = idx;
-            for (File file : getExternalCacheDir().listFiles()) {
-                if (file.getName().equals("untitled" + idx + ".3gp")) {
-                    idx ++;
-                    break;
-                }
-            }
-            if (idx == local){
-                isUsed = true;
-            }
-        }
-        fileName = getExternalCacheDir().getAbsolutePath();
-        fileName += "/untitled" + idx + ".3gp";
-        Log.d("OUT", fileName);
-        myAudioRecorder.setOutputFile(fileName);
-
-    }
-
-    private void createNewRecorder() {
-        myAudioRecorder = new MediaRecorder();
-        myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        createUntitledRecording();
-    }
-
 
     /**
      * Helper method for fragment replacing/adding

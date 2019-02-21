@@ -1,13 +1,13 @@
 package andy.audiorecorderapp.Fragments;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.Toast;
 
 import andy.audiorecorderapp.R;
 
@@ -16,6 +16,9 @@ import andy.audiorecorderapp.R;
  * Used for P2P
  */
 public class PlayFragment extends Fragment {
+
+    private MediaPlayer mediaPlayer;
+    private String fileName;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,4 +37,45 @@ public class PlayFragment extends Fragment {
         return view;
     }
 
+
+    public void onPlayClick() {
+        mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setDataSource(fileName);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (Exception e) {
+            // make something
+        }
+    }
+
+    public void onPauseClick() {
+
+        try {
+            mediaPlayer.pause();
+        } catch (Exception e) {
+            // make something
+        }
+    }
+
+    public void onStopClick() {
+
+        try {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        } catch (Exception e) {
+            // make something
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
 }
