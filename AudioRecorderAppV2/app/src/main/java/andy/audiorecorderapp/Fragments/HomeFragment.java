@@ -7,7 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import java.io.File;
 
 import andy.audiorecorderapp.R;
 
@@ -37,13 +41,18 @@ public class HomeFragment extends Fragment {
         // Inflade the fragment layout
         View view = inflater.inflate(R.layout.fragment_home, null, false);
 
-        ImageButton playBtn = view.findViewById(R.id.playImgBtn);
-        ImageButton recordBtn = view.findViewById(R.id.recordImgBtn);
+        Button playBtn = view.findViewById(R.id.playImgBtn);
+        Button recordBtn = view.findViewById(R.id.recordImgBtn);
 
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListenerToPlay.homeToPlay();
+                if (getActivity().getExternalCacheDir().listFiles().length > 0){
+                    mListenerToPlay.homeToPlay();
+                }else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.no_stories), Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 

@@ -12,14 +12,20 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import java.io.File;
+
 import andy.audiorecorderapp.Fragments.FromHomeToPlay;
 import andy.audiorecorderapp.Fragments.FromHomeToRecord;
+import andy.audiorecorderapp.Fragments.FromRecordToPlay;
 import andy.audiorecorderapp.Fragments.HomeFragment;
 import andy.audiorecorderapp.Fragments.PlayFragment;
 import andy.audiorecorderapp.Fragments.RecordFragment;
 import andy.audiorecorderapp.R;
 
-public class MainActivity extends AppCompatActivity implements FromHomeToRecord, FromHomeToPlay {
+public class MainActivity extends AppCompatActivity implements
+        FromHomeToRecord,
+        FromHomeToPlay,
+        FromRecordToPlay {
 
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
@@ -37,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements FromHomeToRecord,
         fm = getSupportFragmentManager();
 
         openFragment(new HomeFragment(), true);
+
+        // Kill switch
+        // clearDirectoryOfSoundFiles();
     }
 
     @Override
@@ -106,9 +115,7 @@ public class MainActivity extends AppCompatActivity implements FromHomeToRecord,
     @Override
     public void homeToPlay() {
         Fragment fragment = new PlayFragment();
-        Bundle bundle = new Bundle();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        fragment.setArguments(bundle);
         openFragment(fragment, true);
     }
 
@@ -119,5 +126,29 @@ public class MainActivity extends AppCompatActivity implements FromHomeToRecord,
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         return true;
+    }
+
+    @Override
+    public void recordToPlay(String path) {
+        for (int i = 1; i < fm.getBackStackEntryCount(); i++) {
+            fm.popBackStack();
+        }
+        Fragment fragment = new PlayFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("file", path);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        fragment.setArguments(bundle);
+        openFragment(fragment, true);
+    }
+
+
+    private void clearDirectoryOfSoundFiles(){
+        File[] files = getExternalCacheDir().listFiles();
+        for (int i = files.length-1; i >= 0; i--){
+            boolean resp = files[i].delete();
+            if (resp){
+                Log.d("File","Deleted");
+            }
+        }
     }
 }

@@ -1,12 +1,13 @@
 <resources>
-    <string name="app_name">AudioRecorderApp</string>
+    <string name="app_name">Interactive Story Telling</string>
     <string name="optagHistorie">Tell a story</string>
     <string name="record">Record story</string>
     <string name="stop">Stop recording</string>
     <string name="play">Play recent story</string>
-    <string name="afspilHistorie">Play chosen story:</string>
+    <string name="afspilHistorie">Play a story</string>
     <string name="editName">Rename</string>
     <string name="listen">Listen to a story</string>
     <string name="timer" translatable="false">00:00</string>
-    <string name="pause">Pause</string>
+    <string name="pause" translatable="false">Pause</string>
+    <string name="no_stories">There are no stories. Tell one</string>
 </resources>

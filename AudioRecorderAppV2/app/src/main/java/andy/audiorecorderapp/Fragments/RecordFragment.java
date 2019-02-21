@@ -1,5 +1,6 @@
 package andy.audiorecorderapp.Fragments;
 
+import android.content.Context;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,11 +26,11 @@ public class RecordFragment extends Fragment {
     private MediaRecorder myAudioRecorder;
     private ImageButton startRecordingBtn;
     private ImageButton stopRecordingBtn;
+    private FromRecordToPlay mListenerToPlay;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        createNewRecorder();
 
     }
 
@@ -49,7 +50,6 @@ public class RecordFragment extends Fragment {
                 onRecordStartClick();
             }
         });
-
 
         stopRecordingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +73,7 @@ public class RecordFragment extends Fragment {
         myAudioRecorder.start();
         startRecordingBtn.setEnabled(false);
         stopRecordingBtn.setEnabled(true);
-
+        actionChange(ACTION.RECORD);
     }
 
     public void onRecordStopClick(){
@@ -81,6 +81,8 @@ public class RecordFragment extends Fragment {
         myAudioRecorder = null;
         startRecordingBtn.setEnabled(true);
         stopRecordingBtn.setEnabled(false);
+        actionChange(ACTION.STOP);
+        mListenerToPlay.recordToPlay(fileName);
     }
 
     @Override
@@ -124,6 +126,30 @@ public class RecordFragment extends Fragment {
         createUntitledRecording();
     }
 
+    public void actionChange(RecordFragment.ACTION action){
+        switch (action){
+            case RECORD:
+                startRecordingBtn.setImageResource(R.drawable.recording);
+                stopRecordingBtn.setImageResource(R.drawable.stop_idle);
+                break;
+            case STOP:
+                startRecordingBtn.setImageResource(R.drawable.record_idle);
+                stopRecordingBtn.setImageResource(R.drawable.stopped);
+                break;
+        }
+    }
 
+    public enum ACTION {
+        RECORD, STOP
+    }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListenerToPlay = (FromRecordToPlay) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement FromRecordToPlay");
+        }
+    }
 }

@@ -7,16 +7,63 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e4d8c558-10f7-4f32-8a06-4c33bf9bf085" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/.idea/assetWizardSettings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/pauseIdle-web.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/pause_idle-web.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/paused-web.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/playIdle-web.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/play_idle-web.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/playing-web.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/recordIdle-web.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/record_idle-web.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/recording-web.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-hdpi/pause_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-hdpi/paused.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-hdpi/play_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-hdpi/playing.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-hdpi/record_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-hdpi/recording.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-hdpi/stop_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-hdpi/stopped.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-mdpi/pause_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-mdpi/paused.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-mdpi/play_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-mdpi/playing.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-mdpi/record_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-mdpi/recording.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-mdpi/stop_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-mdpi/stopped.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xhdpi/pause_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xhdpi/paused.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xhdpi/play_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xhdpi/playing.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xhdpi/record_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xhdpi/recording.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xhdpi/stop_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xhdpi/stopped.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxhdpi/pause_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxhdpi/paused.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxhdpi/play_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxhdpi/playing.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxhdpi/record_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxhdpi/recording.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxhdpi/stop_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxhdpi/stopped.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxxhdpi/pause_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxxhdpi/paused.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxxhdpi/play_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxxhdpi/playing.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxxhdpi/record_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxxhdpi/recording.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxxhdpi/stop_idle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/mipmap-xxxhdpi/stopped.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/stopIdle-web.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/stop_idle-web.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/stopped-web.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/java/andy/audiorecorderapp/Activities/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/java/andy/audiorecorderapp/Activities/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/java/andy/audiorecorderapp/Fragments/HomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/java/andy/audiorecorderapp/Fragments/HomeFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/java/andy/audiorecorderapp/Fragments/PlayFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/java/andy/audiorecorderapp/Fragments/PlayFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/java/andy/audiorecorderapp/Fragments/RecordFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/java/andy/audiorecorderapp/Fragments/RecordFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/layout-xlarge/fragment_play.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/layout-xlarge/fragment_play.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/layout-xlarge/fragment_record.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/layout-xlarge/fragment_record.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../AudioRecorderAppV2/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,6 +82,7 @@
     <session id="1491388450">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="1" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.opened" value="1" />
         </counts>
@@ -56,7 +104,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/andy/audiorecorderapp/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="124">
+            <state relative-caret-position="-297">
               <caret line="71" column="4" selection-start-line="71" selection-start-column="4" selection-end-line="79" selection-end-column="5" />
             </state>
           </provider>
@@ -68,8 +116,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="y" value="23" />
     <option name="width" value="1440" />
-    <option name="height" value="900" />
+    <option name="height" value="792" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -280,7 +329,7 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/app/src/main/java/andy/audiorecorderapp/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="124">
+        <state relative-caret-position="-297">
           <caret line="71" column="4" selection-start-line="71" selection-start-column="4" selection-end-line="79" selection-end-column="5" />
         </state>
       </provider>
