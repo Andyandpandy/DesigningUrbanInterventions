@@ -7,4 +7,5 @@
     <string name="afspilHistorie">Play chosen story:</string>
     <string name="editName">Rename</string>
     <string name="listen">Listen to a story</string>
+    <string name="timer" translatable="false">00:00</string>
 </resources>

@@ -1,4 +1,4 @@
-package andy.audiorecorderapp;
+package andy.audiorecorderapp.Activities;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -6,27 +6,31 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+import andy.audiorecorderapp.Fragments.FromHomeToPlay;
+import andy.audiorecorderapp.Fragments.FromHomeToRecord;
+import andy.audiorecorderapp.Fragments.HomeFragment;
+import andy.audiorecorderapp.Fragments.PlayFragment;
+import andy.audiorecorderapp.Fragments.RecordFragment;
+import andy.audiorecorderapp.R;
+
+public class MainActivity extends AppCompatActivity implements FromHomeToRecord, FromHomeToPlay {
 
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-    private Button stopBtn, recordBtn;
-    private ListView recordingHistory;
     private MediaRecorder myAudioRecorder;
     // Requesting permission to RECORD_AUDIO
     private boolean permissionToRecordAccepted = false;
@@ -37,20 +41,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.audio_recorder_layout);
-
         ensurePermissionGranted();
-
-        stopBtn = findViewById(R.id.stopRecordingBtn);
-        recordBtn = findViewById(R.id.recordBtn);
-        recordingHistory = findViewById(R.id.recordingHistory);
-        stopBtn.setEnabled(false);
 
         createNewRecorder();
 
-        updateListView();
+        FragmentManager fm = getSupportFragmentManager();
 
-        recordingHistory.setItemsCanFocus(true);
-
+        openFragment(new HomeFragment(), true);
+        //fm.popBackStack();
     }
 
     public void onRecordClick(View btn) {
@@ -63,33 +61,9 @@ public class MainActivity extends AppCompatActivity {
             Log.d("OUT", "SOMETHING WENT WRONG IO" + ioe.getMessage());
         }
         myAudioRecorder.start();
-        recordBtn.setEnabled(false);
-        recordBtn.setBackgroundColor(getResources().getColor(R.color.grey));
-        stopBtn.setEnabled(true);
         Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
     }
 
-    public void onStopClick(View v) {
-        myAudioRecorder.release();
-        myAudioRecorder = null;
-        recordBtn.setEnabled(true);
-        recordBtn.setBackgroundColor(getResources().getColor(R.color.red));
-        stopBtn.setEnabled(false);
-        Toast.makeText(getApplicationContext(), "Audio Recorder stopped", Toast.LENGTH_LONG).show();
-        updateListView();
-    }
-
-    public void onPlayClick(View v) {
-        mediaPlayer = new MediaPlayer();
-        try {
-            mediaPlayer.setDataSource(fileName);
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-            Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
-            // make something
-        }
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -149,18 +123,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateListView() {
-        File[] list = getExternalCacheDir().listFiles();
-        Log.d("Length", list.length + "");
-        ArrayList<File> fileNames = new ArrayList<>();
-        for (File file : list) {
-            Log.d("IterFiles", file.getName());
-            fileNames.add(file);
-        }
-
-        recordingHistory.setAdapter(new RecordingAdapter(this, R.layout.audio_recorder_layout, new ArrayList<File>(fileNames),this));
-
-    }
 
     private void createUntitledRecording() {
         // Record to the external cache directory for visibility
@@ -191,5 +153,38 @@ public class MainActivity extends AppCompatActivity {
         myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         createUntitledRecording();
+    }
+
+
+    /**
+     * Helper method for fragment replacing/adding
+     * @param selectedFragment Fragment
+     * @param addToBackstack boolean
+     */
+    private void openFragment(Fragment selectedFragment, boolean addToBackstack) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (addToBackstack){
+            transaction.addToBackStack(selectedFragment.getClass().getSimpleName());
+        }
+        transaction.replace(R.id.fragment_container, selectedFragment, selectedFragment.getClass().getSimpleName());
+        transaction.commit();
+    }
+
+    @Override
+    public void homeToRecord() {
+        Fragment fragment = new RecordFragment();
+        Bundle bundle = new Bundle();
+
+        fragment.setArguments(bundle);
+        openFragment(fragment, true);
+    }
+
+    @Override
+    public void homeToPlay() {
+        Fragment fragment = new PlayFragment();
+        Bundle bundle = new Bundle();
+
+        fragment.setArguments(bundle);
+        openFragment(fragment, true);
     }
 }
