@@ -130,11 +130,15 @@ public class RecordFragment extends Fragment {
         switch (action){
             case RECORD:
                 startRecordingBtn.setImageResource(R.drawable.recording);
+                startRecordingBtn.setEnabled(false);
                 stopRecordingBtn.setImageResource(R.drawable.stop_idle);
+                stopRecordingBtn.setEnabled(true);
                 break;
             case STOP:
                 startRecordingBtn.setImageResource(R.drawable.record_idle);
+                startRecordingBtn.setEnabled(true);
                 stopRecordingBtn.setImageResource(R.drawable.stopped);
+                stopRecordingBtn.setEnabled(false);
                 break;
         }
     }
