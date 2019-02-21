@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements FromHomeToRecord,
     private boolean permissionToRecordAccepted = false;
     private String fileName;
     private MediaPlayer mediaPlayer;
+    private FragmentManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,8 @@ public class MainActivity extends AppCompatActivity implements FromHomeToRecord,
 
         createNewRecorder();
 
-        FragmentManager fm = getSupportFragmentManager();
+        fm = getSupportFragmentManager();
+
 
         openFragment(new HomeFragment(), true);
         //fm.popBackStack();
@@ -174,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements FromHomeToRecord,
     public void homeToRecord() {
         Fragment fragment = new RecordFragment();
         Bundle bundle = new Bundle();
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         fragment.setArguments(bundle);
         openFragment(fragment, true);
     }
@@ -183,8 +185,17 @@ public class MainActivity extends AppCompatActivity implements FromHomeToRecord,
     public void homeToPlay() {
         Fragment fragment = new PlayFragment();
         Bundle bundle = new Bundle();
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         fragment.setArguments(bundle);
         openFragment(fragment, true);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        for (int i = 1; i < fm.getBackStackEntryCount(); i++) {
+            fm.popBackStack();
+        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        return true;
     }
 }
