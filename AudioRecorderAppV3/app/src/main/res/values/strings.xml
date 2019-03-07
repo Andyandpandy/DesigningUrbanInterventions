@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Audio Recorder V3</string>
+    <string name="optagHistorie">Tell a story</string>
+    <string name="record">Record story</string>
+    <string name="stop">Stop recording</string>
+    <string name="play">Play recent story</string>
+    <string name="afspilHistorie">Play a story</string>
+    <string name="editName">Rename</string>
+    <string name="listen">Listen to a story</string>
+    <string name="timer" translatable="false">00:00</string>
+    <string name="pause" translatable="false">Pause</string>
+    <string name="no_stories">There are no stories. Tell one</string>
+    <string name="yourstoryissent">Your story is now being sended to the childrens area where it will be played</string>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Interaktiv historie fortælling</string>
+    <string name="optagHistorie">Fortæl en historie</string>
+    <string name="record">Optag en historie</string>
+    <string name="stop">Stop optagelse</string>
+    <string name="play">Afspil seneste historie</string>
+    <string name="afspilHistorie">Hør en historie</string>
+    <string name="editName">Omdøb navn</string>
+    <string name="listen">Lyt til en historie</string>
+    <string name="no_stories">Der er ingen gemte historier. Fortæl den første</string>
+    <string name="yourstoryissent">Din historie bliver nu sendt til børneafdelingen hvor den bliver afspillet</string>
+
+</resources>

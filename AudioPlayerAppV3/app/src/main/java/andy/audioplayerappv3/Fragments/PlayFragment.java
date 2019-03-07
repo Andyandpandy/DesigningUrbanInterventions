@@ -3,6 +3,7 @@ package andy.audioplayerappv3.Fragments;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,7 +13,15 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 import andy.audioplayerappv3.R;
@@ -37,6 +46,7 @@ public class PlayFragment extends Fragment {
     private TextView timerTextView;
     private Handler mHandler = new Handler();
     private long mInterval = 1000;
+    private StorageReference mStorageRef;
 
     private enum ACTION {
         PLAY, PAUSE, STOP
@@ -48,17 +58,22 @@ public class PlayFragment extends Fragment {
 
         files = getActivity().getExternalCacheDir().listFiles();
         Log.d("amount", files.length + "");
-        bundle = getArguments();
-        if (bundle != null) {
-            if (bundle.getString("file") != null) {
-                fileName = bundle.getString("file");
-                justRecorded = true;
-            } else {
-                generateRandomIndex();
+
+        mStorageRef = FirebaseStorage.getInstance("gs://urban-inverventions-audio.appspot.com").getReference();
+        final long ONE_MEGABYTE = 1024 * 1024;
+        mStorageRef.getRoot().getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                // Data for "images/island.jpg" is returns, use this as needed
+
             }
-        }else {
-            generateRandomIndex();
-        }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+
     }
 
     private void generateRandomIndex() {

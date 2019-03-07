@@ -1,29 +1,21 @@
 package andy.audioplayerappv3.Activities;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.io.File;
 
-import andy.audioplayerappv3.Fragments.FromHomeToPlay;
+import andy.audioplayerappv3.Fragments.FromPlayToSend;
 import andy.audioplayerappv3.Fragments.PlayFragment;
 import andy.audioplayerappv3.R;
 
 
 public class MainActivity extends AppCompatActivity implements
-        FromHomeToPlay {
-
-    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-    private boolean permissionToRecordAccepted = false;
+        FromPlayToSend {
 
     private FragmentManager fm;
 
@@ -31,8 +23,6 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.audio_recorder_layout);
-
-        ensurePermissionGranted();
 
         fm = getSupportFragmentManager();
 
@@ -42,46 +32,6 @@ public class MainActivity extends AppCompatActivity implements
         clearDirectoryOfSoundFiles();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case REQUEST_RECORD_AUDIO_PERMISSION:
-                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                break;
-        }
-        if (!permissionToRecordAccepted ) finish();
-
-    }
-
-    private void ensurePermissionGranted() {
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-            Log.d("PERM", "NOT");
-
-            // Permission is not granted
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.RECORD_AUDIO)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-            } else {
-                // No explanation needed; request the permission
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.RECORD_AUDIO},
-                        REQUEST_RECORD_AUDIO_PERMISSION);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        }else {
-            Log.d("PERM", "GRANTED");
-        }
-    }
 
     /**
      * Helper method for fragment replacing/adding
@@ -99,9 +49,11 @@ public class MainActivity extends AppCompatActivity implements
 
 
     @Override
-    public void homeToSend() {
+    public void playToSend() {
         Fragment fragment = new PlayFragment();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         openFragment(fragment, true);
     }
 
@@ -110,16 +62,21 @@ public class MainActivity extends AppCompatActivity implements
         for (int i = 1; i < fm.getBackStackEntryCount(); i++) {
             fm.popBackStack();
         }
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
         return true;
     }
 
     private void clearDirectoryOfSoundFiles(){
-        File[] files = getExternalCacheDir().listFiles();
-        for (int i = files.length-1; i >= 0; i--){
-            boolean resp = files[i].delete();
-            if (resp){
-                Log.d("File","Deleted");
+        if (getExternalCacheDir() != null) {
+            File[] files = getExternalCacheDir().listFiles();
+
+            for (int i = files.length - 1; i >= 0; i--) {
+                boolean resp = files[i].delete();
+                if (resp) {
+                    Log.d("File", "Deleted");
+                }
             }
         }
     }
