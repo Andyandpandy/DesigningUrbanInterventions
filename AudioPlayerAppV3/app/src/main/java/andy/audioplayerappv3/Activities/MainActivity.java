@@ -1,4 +1,4 @@
-package andy.audiorecorderapp.Activities;
+package andy.audioplayerappv3.Activities;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -14,19 +14,13 @@ import android.util.Log;
 
 import java.io.File;
 
-import andy.audiorecorderapp.Fragments.FromHomeToPlay;
-import andy.audiorecorderapp.Fragments.FromHomeToRecord;
-import andy.audiorecorderapp.Fragments.FromRecordToPlay;
-import andy.audiorecorderapp.Fragments.HomeFragment;
-import andy.audiorecorderapp.Fragments.PlayFragment;
-import andy.audiorecorderapp.Fragments.RecordFragment;
-import andy.audiorecorderapp.R;
+import andy.audioplayerappv3.Fragments.FromHomeToPlay;
+import andy.audioplayerappv3.Fragments.PlayFragment;
+import andy.audioplayerappv3.R;
+
 
 public class MainActivity extends AppCompatActivity implements
-        FromHomeToRecord,
-        FromHomeToPlay,
-        FromRecordToPlay {
-
+        FromHomeToPlay {
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private boolean permissionToRecordAccepted = false;
@@ -42,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements
 
         fm = getSupportFragmentManager();
 
-        openFragment(new HomeFragment(), true);
+        openFragment(new PlayFragment(), true);
 
         // Kill switch
         clearDirectoryOfSoundFiles();
@@ -103,17 +97,9 @@ public class MainActivity extends AppCompatActivity implements
         transaction.commit();
     }
 
-    @Override
-    public void homeToRecord() {
-        Fragment fragment = new RecordFragment();
-        Bundle bundle = new Bundle();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        fragment.setArguments(bundle);
-        openFragment(fragment, true);
-    }
 
     @Override
-    public void homeToPlay() {
+    public void homeToSend() {
         Fragment fragment = new PlayFragment();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         openFragment(fragment, true);
@@ -127,20 +113,6 @@ public class MainActivity extends AppCompatActivity implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         return true;
     }
-
-    @Override
-    public void recordToPlay(String path) {
-        for (int i = 1; i < fm.getBackStackEntryCount(); i++) {
-            fm.popBackStack();
-        }
-        Fragment fragment = new PlayFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("file", path);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        fragment.setArguments(bundle);
-        openFragment(fragment, true);
-    }
-
 
     private void clearDirectoryOfSoundFiles(){
         File[] files = getExternalCacheDir().listFiles();

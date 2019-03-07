@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/recordingTimer"
         android:layout_width="91dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"

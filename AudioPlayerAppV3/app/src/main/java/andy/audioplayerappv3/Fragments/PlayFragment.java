@@ -1,4 +1,4 @@
-package andy.audiorecorderapp.Fragments;
+package andy.audioplayerappv3.Fragments;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -9,16 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
-import java.text.BreakIterator;
 import java.util.Random;
 
-import andy.audiorecorderapp.R;
+import andy.audioplayerappv3.R;
+
 
 /**
  * Created by Andy on 2/21/19.
@@ -78,9 +76,6 @@ public class PlayFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_play, null, false);
         setHasOptionsMenu(true);
 
-        startPlayingBtn = view.findViewById(R.id.startPlayingImgBtn);
-        pausePlayingBtn = view.findViewById(R.id.pausePlayingImgBtn);
-        stopPlayingBtn = view.findViewById(R.id.stopPlayingImgBtn);
         timerTextView = view.findViewById(R.id.playTimer);
 
         startPlayingBtn.setOnClickListener(new View.OnClickListener() {
@@ -134,16 +129,10 @@ public class PlayFragment extends Fragment {
             mediaPlayer.setDataSource(fileName);
             mediaPlayer.prepare();
             mediaPlayer.start();
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    actionChange(ACTION.STOP);
-                }
-            });
+
         } catch (Exception e) {
             // make something
         }
-        actionChange(ACTION.PLAY);
         startTimer();
     }
 
@@ -154,7 +143,6 @@ public class PlayFragment extends Fragment {
         } catch (Exception e) {
             // make something
         }
-        actionChange(ACTION.PAUSE);
     }
 
     public void onStopClick() {
@@ -166,7 +154,6 @@ public class PlayFragment extends Fragment {
         } catch (Exception e) {
             // make something
         }
-        actionChange(ACTION.STOP);
         stopTimer();
         resetTimer();
     }
@@ -182,34 +169,6 @@ public class PlayFragment extends Fragment {
         stopTimer();
     }
 
-    public void actionChange(ACTION action){
-        switch (action){
-            case PLAY:
-                startPlayingBtn.setImageResource(R.drawable.playing);
-                startPlayingBtn.setEnabled(false);
-                pausePlayingBtn.setImageResource(R.drawable.pause_idle);
-                pausePlayingBtn.setEnabled(true);
-                stopPlayingBtn.setImageResource(R.drawable.stop_idle);
-                stopPlayingBtn.setEnabled(true);
-                break;
-            case PAUSE:
-                startPlayingBtn.setImageResource(R.drawable.play_idle);
-                startPlayingBtn.setEnabled(true);
-                pausePlayingBtn.setImageResource(R.drawable.paused);
-                pausePlayingBtn.setEnabled(false);
-                stopPlayingBtn.setImageResource(R.drawable.stop_idle);
-                stopPlayingBtn.setEnabled(true);
-                break;
-            case STOP:
-                startPlayingBtn.setImageResource(R.drawable.play_idle);
-                startPlayingBtn.setEnabled(true);
-                pausePlayingBtn.setImageResource(R.drawable.paused);
-                pausePlayingBtn.setEnabled(false);
-                stopPlayingBtn.setImageResource(R.drawable.stopped);
-                stopPlayingBtn.setEnabled(false);
-                break;
-        }
-    }
 
 
     Runnable mStatusChecker = new Runnable() {

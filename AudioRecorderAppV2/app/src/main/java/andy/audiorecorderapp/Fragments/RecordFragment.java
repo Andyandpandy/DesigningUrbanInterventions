@@ -3,6 +3,8 @@ package andy.audiorecorderapp.Fragments;
 import android.content.Context;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,9 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import andy.audiorecorderapp.R;
 
@@ -22,16 +27,22 @@ import andy.audiorecorderapp.R;
  */
 public class RecordFragment extends Fragment {
 
+    private Timer timer = new Timer();
     private String fileName;
     private MediaRecorder myAudioRecorder;
     private ImageButton startRecordingBtn;
     private ImageButton stopRecordingBtn;
     private FromRecordToPlay mListenerToPlay;
 
+    private int mInterval = 1000;
+    private Handler mHandler;
+    private TextView timerTextView;
+    private long startTime;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mHandler = new Handler();
     }
 
 
@@ -43,6 +54,7 @@ public class RecordFragment extends Fragment {
 
         startRecordingBtn = view.findViewById(R.id.startRecordingImgBtn);
         stopRecordingBtn = view.findViewById(R.id.stopRecordingImgBtn);
+        timerTextView = view.findViewById(R.id.recordingTimer);
 
         startRecordingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +69,7 @@ public class RecordFragment extends Fragment {
                 onRecordStopClick();
             }
         });
+
 
         return view;
     }
@@ -74,6 +87,7 @@ public class RecordFragment extends Fragment {
         startRecordingBtn.setEnabled(false);
         stopRecordingBtn.setEnabled(true);
         actionChange(ACTION.RECORD);
+        startTimer();
     }
 
     public void onRecordStopClick(){
@@ -83,6 +97,7 @@ public class RecordFragment extends Fragment {
         stopRecordingBtn.setEnabled(false);
         actionChange(ACTION.STOP);
         mListenerToPlay.recordToPlay(fileName);
+        stopTimer();
     }
 
     @Override
@@ -92,6 +107,7 @@ public class RecordFragment extends Fragment {
             myAudioRecorder.release();
             myAudioRecorder = null;
         }
+        stopTimer();
 
     }
 
@@ -156,4 +172,36 @@ public class RecordFragment extends Fragment {
             throw new ClassCastException(context.toString() + " must implement FromRecordToPlay");
         }
     }
+
+    Runnable mStatusChecker = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                updateStatus(); //this function can change value of mInterval.
+            } finally {
+                // 100% guarantee that this always happens, even if
+                // your update method throws an exception
+                mHandler.postDelayed(mStatusChecker, mInterval);
+            }
+        }
+    };
+
+    private void updateStatus() {
+        if (startTime == 0){
+            return;
+        }
+        int seconds = Integer.parseInt(((System.currentTimeMillis() - startTime) / 1000)+"");
+        timerTextView.setText(String.format("%02d:%02d", seconds / 60, seconds % 60));
+    }
+
+    void startTimer() {
+        mStatusChecker.run();
+        startTime = System.currentTimeMillis();
+    }
+
+    void stopTimer() {
+        mHandler.removeCallbacks(mStatusChecker);
+        startTime = 0;
+    }
+
 }
