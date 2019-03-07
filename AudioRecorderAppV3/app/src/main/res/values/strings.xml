@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Audio Recorder V3</string>
+    <string name="app_name">Audio Recorder App V3</string>
     <string name="optagHistorie">Tell a story</string>
     <string name="record">Record story</string>
     <string name="stop">Stop recording</string>

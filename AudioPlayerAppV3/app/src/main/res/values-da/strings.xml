@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Interaktiv historie fortælling</string>
+    <string name="app_name">Audio Afspiller App V3</string>
     <string name="optagHistorie">Fortæl en historie</string>
     <string name="record">Optag en historie</string>
     <string name="stop">Stop optagelse</string>

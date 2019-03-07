@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Interactive Story Telling</string>
+    <string name="app_name">Audio Player App V3</string>
     <string name="optagHistorie">Tell a story</string>
     <string name="record">Record story</string>
     <string name="stop">Stop recording</string>

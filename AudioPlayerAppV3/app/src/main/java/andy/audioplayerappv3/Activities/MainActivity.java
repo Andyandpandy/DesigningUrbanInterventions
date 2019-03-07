@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.google.firebase.FirebaseApp;
+
 import java.io.File;
 
 import andy.audioplayerappv3.Fragments.FromPlayToSend;
@@ -28,8 +30,10 @@ public class MainActivity extends AppCompatActivity implements
 
         openFragment(new PlayFragment(), true);
 
+        FirebaseApp.initializeApp(this);
+
         // Kill switch
-        clearDirectoryOfSoundFiles();
+        //clearDirectoryOfSoundFiles();
     }
 
 
