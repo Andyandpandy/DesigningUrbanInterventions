@@ -1,20 +1,28 @@
 package andy.audiorecorderappv3.Fragments;
 
+import android.animation.ObjectAnimator;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Path;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.animation.DynamicAnimation;
+import android.support.animation.FlingAnimation;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.PathInterpolator;
+import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,9 +64,10 @@ public class SendFragment extends Fragment {
     private int mInterval = 1000;
     private long startTime = 0;
     private FromSendToRecord mListenerToSend;
-    private int timeBeforeReturning = 10000;
+    private int timeBeforeReturning = 5000;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabase;
+    private PathInterpolator pathInterpolator;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,8 +112,12 @@ public class SendFragment extends Fragment {
                         Log.d("TAG", "UNSUCCESSFUL");
                     }
                 });
+
+
+
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -112,9 +125,39 @@ public class SendFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_send, null, false);
         setHasOptionsMenu(true);
 
+        ImageView img = view.findViewById(R.id.sendImage);
+        img.setRotation(10);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Path path = new Path();
 
+            path.quadTo(img.getX(), img.getY(), img.getX() - 40, img.getY());
+            path.quadTo(img.getX() - 50, img.getY() , img.getX() - 80, img.getY() +  2);
+            path.quadTo(img.getX() - 80, img.getY() + 2, img.getX() - 140, img.getY() +  4);
+            path.quadTo(img.getX() - 140, img.getY() + 4, img.getX() - 200, img.getY() +  8);
+            path.quadTo(img.getX() - 200, img.getY() + 8, img.getX() - 260, img.getY() +  24);
+            path.quadTo(img.getX() - 260, img.getY() + 24, img.getX() - 300, img.getY() +  60);
+            path.quadTo(img.getX()-300, img.getY()+60, img.getX() - 290, img.getY() +  123);
+            path.quadTo(img.getX()-290, img.getY()+123, img.getX()-260, img.getY() +  143);
+            path.quadTo(img.getX()-260, img.getY()+143, img.getX()-228, img.getY() +  154);
+            path.quadTo(img.getX()-228, img.getY()+154, img.getX() -194, img.getY() +  163);
+            path.quadTo(img.getX()-194, img.getY()+163, img.getX() -150, img.getY() +  158);
+            path.quadTo(img.getX()-150, img.getY()+158, img.getX() -113, img.getY() +  153);
+            path.quadTo(img.getX()-113, img.getY()+153, img.getX() -70, img.getY() +  143);
+            path.quadTo(img.getX()-70, img.getY()+143, img.getX() -26, img.getY() +  120);
+            path.quadTo(img.getX()-26, img.getY()+120, img.getX() + 26, img.getY() +  96);
+            path.quadTo(img.getX()+26, img.getY()+96, img.getX() + 78, img.getY() +  70);
+            path.quadTo(img.getX()+78, img.getY()+70, img.getX() + 148, img.getY() +  43);
+            path.quadTo(img.getX()+228, img.getY()+10, img.getX() + 600, img.getY() - 71);
+            ObjectAnimator animator = ObjectAnimator.ofFloat(img, "translationX", "translationY" , path);
 
+            animator.setDuration(4000);
+
+            animator.start();
+
+        } else {
+            // Create animator without using curved path
+        }
         return view;
     }
 
