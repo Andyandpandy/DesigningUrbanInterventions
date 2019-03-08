@@ -47,13 +47,6 @@ public class PlayFragment extends Fragment {
 
     private MediaPlayer mediaPlayer;
     private String fileName;
-    private ImageButton startPlayingBtn;
-    private ImageButton pausePlayingBtn;
-    private ImageButton stopPlayingBtn;
-    private File[] files;
-    private Bundle bundle;
-    private boolean paused;
-    private boolean justRecorded;
     private long startTime;
     private TextView timerTextView;
     private Handler mHandler = new Handler();
@@ -68,11 +61,9 @@ public class PlayFragment extends Fragment {
         super.onCreate(savedInstanceState);
         ids = new ArrayList<>();
 
-        files = getActivity().getExternalCacheDir().listFiles();
-        Log.d("amount", files.length + "");
 
         FirebaseApp.initializeApp(getActivity());
-
+        mediaPlayer = new MediaPlayer();
         playSoundFile();
 
     }
@@ -80,9 +71,12 @@ public class PlayFragment extends Fragment {
     private void playSoundFile() {
         mStorageRef = FirebaseStorage.getInstance("gs://urban-inverventions-audio.appspot.com").getReference();
         mDatabase = FirebaseDatabase.getInstance("https://urban-inverventions-audio.firebaseio.com/").getReference();
+        Log.d("Play", "file");
+
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("yes", "Lets go");
                 DataSnapshot lastData = null;
                 ids = new ArrayList<>();
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
@@ -90,45 +84,45 @@ public class PlayFragment extends Fragment {
                     lastData = data;
                     ids.add(data.getValue().toString());
                 }
-                if (!ids.isEmpty()) {
+
+                if (mediaPlayer != null && !ids.isEmpty() && !mediaPlayer.isPlaying()) {
                     generateRandomIndex();
-                    final long ONE_MEGABYTE = 1024 * 1024;
+
                     mStorageRef.child(fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             playFileName = uri;
                             Log.d("url", playFileName.toString());
-                            Log.d("Hello", "pls");
-                            String url = "gs://urban-inverventions-audio.appspot.com"; // your URL here
-                            mediaPlayer = new MediaPlayer();
-                            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                            try {
-                                mediaPlayer.setDataSource(getActivity().getApplicationContext(), playFileName);
-                                mediaPlayer.prepare(); // might take long! (for buffering, etc)
-                                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                                    @Override
-                                    public void onPrepared(MediaPlayer mediaPlayer) {
-                                        mediaPlayer.start();
-                                        startTimer();
-                                    }
-                                });
-                                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                    @Override
-                                    public void onCompletion(MediaPlayer mediaPlayer) {
-                                        stopTimer();
-                                        mediaPlayer.release();
-                                        try {
-                                            Thread.sleep(4000);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
+
+                                mediaPlayer = new MediaPlayer();
+                                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                                try {
+                                    mediaPlayer.setDataSource(getActivity().getApplicationContext(), playFileName);
+                                    mediaPlayer.prepare(); // might take long! (for buffering, etc)
+                                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                                        @Override
+                                        public void onPrepared(MediaPlayer mediaPlayer) {
+                                            mediaPlayer.start();
+                                            startTimer();
                                         }
-                                        playSoundFile();
-                                    }
-                                });
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                                    });
+                                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                        @Override
+                                        public void onCompletion(MediaPlayer mediaPlayer) {
+                                            stopTimer();
+                                            try {
+                                                Thread.sleep(4000);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                            playSoundFile();
+                                        }
+                                    });
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
+
                     });
                 }else {
                     try {
@@ -143,7 +137,7 @@ public class PlayFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.d("err", databaseError.getMessage());
             }
         });
     }
@@ -172,53 +166,7 @@ public class PlayFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-
-
     }
-
-    public void onPlayClick() {
-        if (mediaPlayer != null){
-                mediaPlayer.start();
-        }
-        Log.d("new", "media");
-        mediaPlayer = new MediaPlayer();
-        try {
-            Log.d("we try", "yes");
-            mediaPlayer.setDataSource(files[0].getAbsolutePath());
-            Log.d("we try", "no");
-            mediaPlayer.prepare();
-            Log.d("we try", "maybe");
-            // Play video when the media source is ready for playback.
-            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mediaPlayer) {
-                    Log.d("we try", "lets see");
-                    mediaPlayer.start();
-                }
-            });
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    onPlayClick();
-                }
-            });
-
-        } catch (Exception e) {
-            // make something
-            Log.d("Exce", e.getMessage());
-        }
-        startTimer();
-    }
-
-    public void onPauseClick() {
-        paused = true;
-        try {
-            mediaPlayer.pause();
-        } catch (Exception e) {
-            // make something
-        }
-    }
-
 
     @Override
     public void onStop() {
@@ -252,12 +200,8 @@ public class PlayFragment extends Fragment {
         if (startTime == 0){
             return;
         }
-        if (paused){
-            startTime += 1000;
-        }else {
-            int seconds = Integer.parseInt(((System.currentTimeMillis() - startTime) / 1000) + "");
-            timerTextView.setText(String.format("%02d:%02d", seconds / 60, seconds % 60));
-        }
+        int seconds = Integer.parseInt(((System.currentTimeMillis() - startTime) / 1000) + "");
+        timerTextView.setText(String.format("%02d:%02d", seconds / 60, seconds % 60));
     }
 
     void startTimer() {
@@ -270,8 +214,5 @@ public class PlayFragment extends Fragment {
         startTime = 0;
         timerTextView.setText("00:00");
     }
-
-
-
 
 }
