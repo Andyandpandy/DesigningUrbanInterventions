@@ -3,6 +3,7 @@ package andy.audioplayerappv3.Fragments;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -12,26 +13,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -55,6 +48,7 @@ public class PlayFragment extends Fragment {
     private DatabaseReference mDatabase;
     private ArrayList<String> ids;
     private Uri playFileName;
+    private boolean readyToPlay = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,11 +58,13 @@ public class PlayFragment extends Fragment {
 
         FirebaseApp.initializeApp(getActivity());
         mediaPlayer = new MediaPlayer();
-        playSoundFile();
+        getSoundFilenames();
+
+        playSound();
 
     }
 
-    private void playSoundFile() {
+    private void getSoundFilenames() {
         mStorageRef = FirebaseStorage.getInstance("gs://urban-inverventions-audio.appspot.com").getReference();
         mDatabase = FirebaseDatabase.getInstance("https://urban-inverventions-audio.firebaseio.com/").getReference();
         Log.d("Play", "file");
@@ -85,14 +81,31 @@ public class PlayFragment extends Fragment {
                     ids.add(data.getValue().toString());
                 }
 
-                if (mediaPlayer != null && !ids.isEmpty() && !mediaPlayer.isPlaying()) {
-                    generateRandomIndex();
+            }
 
-                    mStorageRef.child(fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            playFileName = uri;
-                            Log.d("url", playFileName.toString());
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("err", databaseError.getMessage());
+            }
+        });
+    }
+
+    private void playSound(){
+        new AsyncTask<Void,Void,Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                while (true) {
+                    Log.d("Ready", readyToPlay + "");
+                    if (readyToPlay && !ids.isEmpty()) {
+                        readyToPlay = false;
+                        generateRandomIndex();
+
+                        mStorageRef.child(fileName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(final Uri uri) {
+
+                                playFileName = uri;
+                                Log.d("url", playFileName.toString());
 
                                 mediaPlayer = new MediaPlayer();
                                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -103,6 +116,7 @@ public class PlayFragment extends Fragment {
                                         @Override
                                         public void onPrepared(MediaPlayer mediaPlayer) {
                                             mediaPlayer.start();
+
                                             startTimer();
                                         }
                                     });
@@ -110,43 +124,39 @@ public class PlayFragment extends Fragment {
                                         @Override
                                         public void onCompletion(MediaPlayer mediaPlayer) {
                                             stopTimer();
+                                            mediaPlayer.release();
                                             try {
-                                                Thread.sleep(4000);
+                                                Thread.sleep(7000);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
-                                            playSoundFile();
+                                            readyToPlay = true;
                                         }
                                     });
-                                } catch (IOException e) {
+                                } catch (
+                                        IOException e) {
                                     e.printStackTrace();
                                 }
                             }
-
-                    });
-                }else {
+                        });
+                    }
                     try {
-                        Thread.sleep(10000);
-                        playSoundFile();
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                        break;
                     }
                 }
-
+                return null;
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("err", databaseError.getMessage());
-            }
-        });
+        }.execute();
     }
 
     private void generateRandomIndex() {
         Random random = new Random();
         int idx = random.nextInt(ids.size());
         fileName = ids.get(idx);
-
+        Log.d("new file", idx + "");
     }
 
 
